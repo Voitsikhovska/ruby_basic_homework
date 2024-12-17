@@ -1,24 +1,19 @@
-# README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Social App
+## Overview
+This is a Rails-based social application that supports users, tweets, likes, and comments. The app demonstrates a basic social media-like structure using Ruby on Rails.
 
-Things you may want to cover:
+## Generators Used
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```bash
+rails generate model User name:string email:string:index password_digest:string
+rails generate model UserProfile user:references bio:text location:string
+rails generate model Tweet user:references content:text
+rails generate model Like user:references tweet:references comment:references
+rails generate model Comment user:references tweet:references content:text
+```
+## Versions
+```bash
+ruby -v (3.3.1)
+rails -v (7.1.5)
+```
