@@ -15,6 +15,7 @@ class Tweet < ApplicationRecord
   MAX_CONTENT_LENGTH = 240
 
   belongs_to :user
+  has_many :comments, dependent: :destroy
 
   validates :content, presence: true, length: { maximum: MAX_CONTENT_LENGTH }
 end
