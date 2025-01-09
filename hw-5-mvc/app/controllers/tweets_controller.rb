@@ -3,33 +3,8 @@
 class TweetsController < ApplicationController
   def show
     @tweet = Tweet.find_by(id: params[:id])
-    if @tweet
-      render inline: <<-ERB
-        <h1><%= @tweet.content %></h1>
-        <p>Posted by: <%= @tweet.user.user_profile.first_name %> <%= @tweet.user.user_profile.last_name %> (@<%= @tweet.user.user_profile.username %>)</p>
-        <h2>Comments</h2>
-        <% if @tweet.comments.any? %>
-          <% @tweet.comments.each do |comment| %>
-            <p>
-              <strong><%= comment.user.user_profile.username %></strong>: <%= comment.content %>
-            </p>
-          <% end %>
-        <% else %>
-          <p>No comments yet.</p>
-        <% end %>
-        <h4>Add a comment</h4>
-        <%= form_with model: [@tweet, Comment.new], local: true do |f| %>
-          <div class="form-group">
-            <%= f.label :content, "Your Comment" %>
-            <%= f.text_area :content, rows: 3, class: "form-control" %>
-          </div>
-          <div class="form-group">
-            <%= f.submit "Post Comment", class: "btn btn-primary" %>
-          </div>
-        <% end %>
-      ERB
-    else
-      redirect_to tweets_path, alert: "Tweet not found."
+    if @tweet.nil?
+      render plain: "Tweet not found", status: :not_found
     end
   end
   # def show
