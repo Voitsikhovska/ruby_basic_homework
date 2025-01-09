@@ -1,0 +1,12 @@
+<h1>Edit Comment</h1>
+
+<%= form_with model: [@comment.tweet, @comment], local: true do |f| %>
+  <div class="form-group">
+    <%= f.label :content, "Your Comment" %>
+    <%= f.text_area :content, rows: 3, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.submit "Update Comment", class: "btn btn-primary" %>
+  </div>
+<% end %>
+

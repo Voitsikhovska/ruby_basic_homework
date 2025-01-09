@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   }
 
   resources :tweets do
-    resources :comments
+    resources :comments, only: [:create, :destroy, :edit, :update]
   end
 
 

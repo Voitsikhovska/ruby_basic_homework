@@ -1,5 +1,21 @@
 class CommentsController < ApplicationController
-  before_action :set_tweet
+  before_action :set_tweet, only: [:edit, :update, :destroy]
+  before_action :authorize_user, only: [:edit, :update]
+
+  def edit
+    @comment = Comment.find(params[:id])
+    @comments = @comment.tweet.comments.includes(:user).order(created_at: :desc)
+  end
+
+  def update
+    if @comment.update(comment_params)
+      flash[:notice] = "Comment updated successfully."
+      redirect_to root_path
+    else
+      flash.now[:alert] = @comment.errors.full_messages.to_sentence
+      render :edit
+    end
+  end
 
   def new
     @tweet = Tweet.find(params[:tweet_id])
@@ -38,5 +54,11 @@ class CommentsController < ApplicationController
 
   def comment_params
     params.require(:comment).permit(:content)
+  end
+  def authorize_user
+    @comment = Comment.find(params[:id])
+    unless @comment.user == current_user
+      redirect_to root_path, alert: "You are not authorized to perform this action."
+    end
   end
 end
