@@ -1,6 +1,9 @@
 <div class="card mb-3" id="tweet-<%= tweet.id %>">
   <div class="card-body">
-    <%= render partial: "comments/show", locals: { tweet: tweet} %>
+    <%= render partial: "tweets/show", locals: { tweet: tweet} %>
+
+    <%= render partial: "likes/like", locals: { tweet: tweet} %>
+
     <h4>Comments:</h4>
     <div id="comments">
       <% if tweet.comments.any? %>

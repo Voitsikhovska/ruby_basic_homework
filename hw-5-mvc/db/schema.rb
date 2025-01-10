@@ -10,23 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_01_08_223415) do
-
+ActiveRecord::Schema[7.2].define(version: 2025_01_10_010944) do
   create_table "comments", force: :cascade do |t|
     t.text "content"
     t.integer "tweet_id", null: false
     t.integer "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["tweet_id"], name: "index_comments_on_tweet_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "tweet_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tweet_id"], name: "index_likes_on_tweet_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "tweets", force: :cascade do |t|
     t.string "content"
     t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["user_id"], name: "index_tweets_on_user_id"
   end
 
@@ -37,8 +45,8 @@ ActiveRecord::Schema.define(version: 2025_01_08_223415) do
     t.date "birthday"
     t.string "bio"
     t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["user_id"], name: "index_user_profiles_on_user_id"
   end
 
@@ -46,16 +54,18 @@ ActiveRecord::Schema.define(version: 2025_01_08_223415) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "comments", "tweets"
   add_foreign_key "comments", "users"
+  add_foreign_key "likes", "tweets"
+  add_foreign_key "likes", "users"
   add_foreign_key "tweets", "users"
   add_foreign_key "user_profiles", "users"
 end

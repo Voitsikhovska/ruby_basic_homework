@@ -15,13 +15,17 @@
 #
 
 class User < ApplicationRecord
+  # Devise modules
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_one  :user_profile, dependent: :destroy, inverse_of: :user
-  has_many :tweets,       dependent: :destroy
+  has_one :user_profile, dependent: :destroy, inverse_of: :user
+  has_many :tweets, dependent: :destroy
+  has_many :likes, dependent: :destroy
+  has_many :liked_tweets, through: :likes, source: :tweet
 
+  # Налаштування accepts_nested_attributes_for
   accepts_nested_attributes_for :user_profile,
-                                reject_if:     :all_blank,
+                                reject_if: :all_blank,
                                 allow_destroy: true
 end

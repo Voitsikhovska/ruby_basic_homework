@@ -1,11 +1,16 @@
 <p>
-  <strong><%= comment.user.user_profile.username %></strong>:
-  <%= form_with(model: [tweet, comment], method: :patch, local: true, class: "comment-update-form") do |form| %>
-    <%= form.text_area :content, value: comment.content, rows: 1, class: "form-control" %>
+  <% if comment.user == current_user %>
+    <strong><%= comment.user.user_profile.username %></strong>:
+    <%= form_with(model: [tweet, comment], method: :patch, local: true, class: "comment-update-form") do |form| %>
+      <%= form.text_area :content, value: comment.content, rows: 1, class: "form-control" %>
     <div class="row">
-    <%= form.submit "Update", class: "btn btn-primary btn-sm mt-2 h-100 m-2" %>
-    <%= render partial: "comments/delete", locals: { tweet: tweet, comment: comment } %>
+      <%= form.submit "Update", class: "btn btn-primary btn-sm mt-2 h-100 m-2" %>
+      <%= render partial: "comments/delete", locals: { tweet: tweet, comment: comment } %>
     </div>
-
+  <% end %>
+  <% else %>
+    <p class="comment-content">
+      <strong><%= comment.user.user_profile.username %></strong>: <%= comment.content %>
+    </p>
   <% end %>
 </p>

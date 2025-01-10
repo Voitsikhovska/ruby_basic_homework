@@ -1,5 +1,5 @@
-require 'spec_helper'
 require 'capybara/rspec'
+require 'spec_helper'
 require 'selenium/webdriver'
 
 ENV['RAILS_ENV'] ||= 'test'

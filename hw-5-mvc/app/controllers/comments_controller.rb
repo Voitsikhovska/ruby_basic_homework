@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
   before_action :set_tweet, only: [:edit, :update, :destroy]
-  before_action :authorize_user, only: [:edit, :update]
+  before_action :authorize_user, only: [:edit, :update, :destroy]
+  before_action :set_comment, only: [:edit, :update, :destroy]
 
   def edit
     @comment = Comment.find(params[:id])
@@ -51,7 +52,9 @@ class CommentsController < ApplicationController
   def set_tweet
     @tweet = Tweet.find(params[:tweet_id])
   end
-
+  def set_comment
+    @comment = Comment.find(params[:id])
+  end
   def comment_params
     params.require(:comment).permit(:content)
   end
