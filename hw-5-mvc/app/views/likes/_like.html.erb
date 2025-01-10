@@ -1,0 +1,13 @@
+<div class="tweet-actions">
+  <p>Likes: <%= tweet.likes.count %></p>
+  <% if current_user.liked_tweets.include?(tweet) %>
+    <%= button_to  tweet_like_path(tweet), method: :delete, class: "btn bg-transparent mb-3 p-0" do %>
+      <%= image_tag "dislike.svg", alt: "Dislike", class: "dislike-icon" %>
+      <% end %>
+  <% else %>
+    <%= button_to  tweet_like_path(tweet), method: :post, class: " btn bg-transparent mb-3 p-0" do %>
+      <%= image_tag "like.svg", alt: "Like", class: "like-icon" %>
+    <%end%>
+  <% end %>
+</div>
+
