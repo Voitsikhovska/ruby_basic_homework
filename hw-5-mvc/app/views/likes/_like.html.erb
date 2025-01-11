@@ -1,13 +1,29 @@
-<div class="tweet-actions">
-  <p>Likes: <%= tweet.likes.count %></p>
-  <% if current_user.liked_tweets.include?(tweet) %>
-    <%= button_to  tweet_like_path(tweet), method: :delete, class: "btn bg-transparent mb-3 p-0" do %>
-      <%= image_tag "dislike.svg", alt: "Dislike", class: "dislike-icon" %>
-      <% end %>
-  <% else %>
-    <%= button_to  tweet_like_path(tweet), method: :post, class: " btn bg-transparent mb-3 p-0" do %>
-      <%= image_tag "like.svg", alt: "Like", class: "like-icon" %>
-    <%end%>
+<!--<div class="tweet-actions">-->
+<!--  <p>Likes: <%#= tweet.likes.count %></p>-->
+  <%# if current_user.liked_tweets.exists?(id: tweet.id) %>
+    <%#= button_to tweet_like_path(tweet), method: :delete, class: "btn bg-transparent mb-3 p-0" do %>
+      <%#= image_tag "dislike.svg", alt: "Dislike", class: "dislike-icon" %>
+    <%# end %>
+  <%# else %>
+    <%#= button_to tweet_like_path(tweet), method: :post, class: "btn bg-transparent mb-3 p-0" do %>
+      <%#= image_tag "like.svg", alt: "Like", class: "like-icon" %>
+    <%# end %>
+  <%# end %>
+<!--</div>-->
+
+<% like = current_user.likes.find_by(likable: likable) %>
+
+<% if like %>
+  <%= form_with url: like_path(id: like.id), method: :delete do %>
+    <%= submit_tag "Dislike", class: "btn btn-danger mt-3" %>
   <% end %>
-</div>
+<% else %>
+  <%= form_with url: likes_path, method: :post do %>
+    <%= hidden_field_tag :likable, likable.class.name %>
+    <%= hidden_field_tag :likable_id, likable.id %>
+    <%= submit_tag "Like", class: "btn btn-primary mb-3" %>
+  <% end %>
+<% end %>
+
+
 

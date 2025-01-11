@@ -22,8 +22,12 @@ class User < ApplicationRecord
   has_one :user_profile, dependent: :destroy, inverse_of: :user
   has_many :tweets, dependent: :destroy
   has_many :likes, dependent: :destroy
-  has_many :liked_tweets, through: :likes, source: :tweet
+  has_many :tweets, dependent: :destroy
+  has_many :liked_tweets, -> { where(likes: { likable_type: 'Tweet' }) },
+           through: :likes, source: :likable, source_type: 'Tweet'
 
+  has_many :liked_comments, -> { where(likes: { likable_type: 'Comment' }) },
+           through: :likes, source: :likable, source_type: 'Comment'
   # Налаштування accepts_nested_attributes_for
   accepts_nested_attributes_for :user_profile,
                                 reject_if: :all_blank,

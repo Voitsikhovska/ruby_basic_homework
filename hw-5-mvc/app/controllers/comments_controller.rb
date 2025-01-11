@@ -25,14 +25,17 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment = Comment.find(params[:id])
-    @tweet = @comment.tweet # Знаходимо твіт, щоб повернутися на ту ж сторінку
-    @comment.destroy
 
-    flash.now[:notice] = "Comment deleted successfully."
-    @comments = @tweet.comments.includes(:user).order(created_at: :desc)
+    if @comment.user == current_user
+      @comment.destroy
+      flash[:notice] = "Comment deleted successfully."
+    else
+      flash[:alert] = "You are not authorized to delete this comment."
+    end
+
     redirect_to root_path
-
   end
+
   def create
     @tweet = Tweet.find(params[:tweet_id])
     @comment = @tweet.comments.new(comment_params.merge(user: current_user))

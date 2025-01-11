@@ -1,22 +1,31 @@
 <div class="card mb-3" id="tweet-<%= tweet.id %>">
   <div class="card-body">
-    <%= render partial: "tweets/show", locals: { tweet: tweet} %>
-
-    <%= render partial: "likes/like", locals: { tweet: tweet} %>
+    <%= render partial: "tweets/show", locals: { tweet: tweet } %>
 
     <h4>Comments:</h4>
-    <div id="comments">
+    <div id="comments_section" class="comments" data-tweet-id="<%= tweet.id %>">
       <% if tweet.comments.any? %>
         <% tweet.comments.each do |comment| %>
-          <div class="comment">
-            <%= render partial: "comments/edit", locals: { tweet: tweet, comment: comment } %>
+
+          <div class="comment" id="comment-<%= comment.id %>">
+            <%= render partial: "comments/edit", locals: { tweet: tweet, comment: comment, user: @user } %>
           </div>
+          <p class="comment-date">
+            <small>Posted on: <%= comment.created_at.strftime('%D') %></small>
+          </p>
+          <%= render partial: "likes/like", locals: { likable: comment } %>
         <% end %>
       <% else %>
         <p>No comments yet.</p>
       <% end %>
     </div>
-   <h4>Add a comment</h4>
-    <%= render partial: "comments/add", locals: { tweet: tweet} %>
+
+    <h4>Add a comment</h4>
+    <div id="add_comment_<%= tweet.id %>" class="add-comment">
+      <%= render partial: "comments/add", locals: { tweet: tweet } %>
+    </div>
+    <%= render partial: "likes/like", locals: { likable: tweet } %>
+
   </div>
+
 </div>
