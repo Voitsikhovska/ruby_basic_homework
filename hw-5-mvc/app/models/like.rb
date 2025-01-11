@@ -1,6 +1,6 @@
 class Like < ApplicationRecord
   belongs_to :user
-  belongs_to :tweet
+  belongs_to :likable, polymorphic: true
 
-  validates :user_id, uniqueness: { scope: :tweet_id, message: "You can like a tweet only once." }
+  validates :user_id, uniqueness: { scope: [:likable_id, :likable_type], message: "You can like this only once." }
 end

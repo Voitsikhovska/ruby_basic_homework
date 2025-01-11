@@ -29,19 +29,29 @@ feature "Commenting flow: " do
         end
   
         click_button 'Log in'
-        
+
         within("#tweet-#{tweet.id}") do
+            # Переконайтеся, що поле для коментаря доступне
+            expect(page).to have_css("#comment_content")
+
+            # Введіть текст у поле для коментаря
             find("#comment_content").set("Yes. Agree!")
 
+            # Натисніть кнопку для додавання коментаря
             click_button "comment"
+
+            # Очікуйте появи секції з коментарями
+            expect(page).to have_css("#comments_section")
 
             comments_section = find("#comments_section")
 
+            # Перевірте вміст секції коментарів
             expect(comments_section).to have_content "Yes. Agree!"
             expect(comments_section).to have_content "@#{@user.user_profile.username}"
             expect(comments_section).to have_content Comment.last.created_at&.strftime('%D')
         end
-        
+
+
         within("#tweet-#{another_tweet.id}") do
             expect(find("#comments_section")).not_to have_content "Yes. Agree!"
         end

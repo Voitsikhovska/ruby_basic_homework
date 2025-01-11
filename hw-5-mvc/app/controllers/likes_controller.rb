@@ -1,33 +1,39 @@
 class LikesController < ApplicationController
-  before_action :set_tweet
+  before_action :set_likable, only: :create
 
   def create
-    like = current_user.likes.new(tweet: @tweet)
+    @likable = params[:likable].safe_constantize.find(params[:likable_id])
+    @like = @likable.likes.build(user: current_user)
 
-    if like.save
-      flash[:notice] = "You liked the tweet."
+    if @like.save
+      flash[:notice] = "Liked successfully."
     else
-      flash[:alert] = "Unable to like the tweet."
+      flash[:alert] = "Unable to like."
     end
 
-    redirect_to root_path
+    redirect_back(fallback_location: root_path)
   end
+
 
   def destroy
-    like = current_user.likes.find_by(tweet: @tweet)
+    @like = Like.find(params[:id])
 
-    if like&.destroy
-      flash[:notice] = "You unliked the tweet."
+    if @like.destroy
+      flash[:notice] = "Disliked successfully."
     else
-      flash[:alert] = "Unable to unlike the tweet."
+      flash[:alert] = "Unable to dislike."
     end
 
-    redirect_to root_path
+    redirect_back(fallback_location: root_path)
   end
+
 
   private
 
-  def set_tweet
-    @tweet = Tweet.find(params[:tweet_id])
+  def set_likable
+    klass = params[:likable].safe_constantize
+    raise ActionController::BadRequest, "Invalid likable type" unless klass
+
+    @likable = klass.find(params[:likable_id])
   end
 end

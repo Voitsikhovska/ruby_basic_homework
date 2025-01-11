@@ -1,8 +1,14 @@
 # frozen_string_literal: true
 
 class TweetsController < ApplicationController
+  def index
+    @tweets = current_user.tweets
+  end
+
   def show
     @tweet = Tweet.find_by(id: params[:id])
+    @user = current_user
+    @comments = @tweet.comments
     if @tweet.nil?
       render plain: "Tweet not found", status: :not_found
     end

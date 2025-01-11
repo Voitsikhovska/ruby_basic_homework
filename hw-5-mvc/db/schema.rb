@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_01_10_010944) do
+ActiveRecord::Schema[7.2].define(version: 2025_01_11_200109) do
   create_table "comments", force: :cascade do |t|
     t.text "content"
     t.integer "tweet_id", null: false
@@ -23,10 +23,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_10_010944) do
 
   create_table "likes", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "tweet_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["tweet_id"], name: "index_likes_on_tweet_id"
+    t.string "likable_type", null: false
+    t.integer "likable_id", null: false
+    t.index ["likable_type", "likable_id"], name: "index_likes_on_likable"
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
@@ -64,7 +65,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_10_010944) do
 
   add_foreign_key "comments", "tweets"
   add_foreign_key "comments", "users"
-  add_foreign_key "likes", "tweets"
   add_foreign_key "likes", "users"
   add_foreign_key "tweets", "users"
   add_foreign_key "user_profiles", "users"
