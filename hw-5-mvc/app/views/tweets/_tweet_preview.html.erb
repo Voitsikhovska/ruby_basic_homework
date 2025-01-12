@@ -1,5 +1,7 @@
 <div class="card mb-3" id="tweet-<%= tweet.id %>">
   <div class="card-body">
+    <p>@<%= current_user.user_profile.username %></p>
+
     <%= render partial: "tweets/show", locals: { tweet: tweet } %>
 
     <h4>Comments:</h4>

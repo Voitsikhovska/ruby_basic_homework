@@ -4,13 +4,13 @@
   </div>
 
   <div class="col-md-6 mt-4">
-    <%= render 'tweets/form' %>
 
     <hr>
 
     <%= render partial: 'tweets/tweet_preview', collection: @tweets, as: :tweet %>
   </div>
 
+  <%= render 'tweets/form' %>
 
   <div class="col-md-3">
     <%= render 'home/users_list', users: @users %>
